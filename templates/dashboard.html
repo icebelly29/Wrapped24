@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Music Stats | Spotify Inspired</title>
+    
+    <!-- Spotify Favicon -->
+    <link rel="icon" href="spotify.png" type="image/png">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- HTML2Canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        body {
+            background-color: #121212; /* Spotify black */
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .highlight {
+            color: #1DB954; /* Spotify green */
+        }
+        .rounded-lg {
+            background-color: #181818;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .btn-green {
+            background-color: #1DB954;
+            color: white;
+        }
+        .btn-green:hover {
+            background-color: #1ed760;
+        }
+    </style>
+</head>
+<body class="container mx-auto p-8">
+    <!-- Header Section -->
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold highlight uppercase tracking-wide">
+            (Pre-) Spotify Wrapped 2024
+        </h1>
+        <p class="text-lg mt-2 text-gray-400">
+            Discover your top tracks, genres, and artists — all in one place!
+        </p>
+    </header>
+
+    <!-- Stats Grid -->
+    <main id="stats-content" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Top Tracks Section -->
+        <section class="p-6 rounded-lg shadow-lg hover-card">
+            <h2 class="text-2xl font-semibold mb-4">
+                Top Tracks
+            </h2>
+            <img src="{{ tracks_chart }}" alt="Top Tracks Chart" class="w-full rounded-lg mb-4">
+            <ul class="space-y-3">
+                {% for track in top_tracks %}
+                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <span class="font-medium">{{ track.name }}</span>
+                    <span class="text-sm text-gray-400">by {{ track.artists[0].name }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Top Genres Section -->
+        <section class="p-6 rounded-lg shadow-lg hover-card">
+            <h2 class="text-2xl font-semibold mb-4">
+                Top Genres
+            </h2>
+            <img src="{{ genres_chart }}" alt="Top Genres Chart" class="w-full rounded-lg mb-4">
+            <div class="flex flex-wrap gap-2">
+                {% for artist in top_artists %}
+                    {% for genre in artist.genres %}
+                    <span class="px-3 py-1 text-sm rounded-full bg-gray-700 text-gray-300 hover:bg-gray-600">
+                        {{ genre }}
+                    </span>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <!-- Buttons Section -->
+    <div class="text-center mt-12 space-x-4">
+        <a href="/logout" class="px-6 py-3 btn-green font-semibold rounded-full uppercase tracking-wide shadow-md hover:shadow-lg transition">
+            Logout
+        </a>
+        <button id="download-stats" class="px-6 py-3 bg-gray-800 text-white font-semibold rounded-full uppercase tracking-wide shadow-md hover:bg-gray-700 hover:shadow-lg transition">
+            Share Stats (Download Image)
+        </button>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="text-center mt-16 p-6 bg-gray-900 rounded-lg">
+        <p class="text-gray-400 text-lg">
+            Spotify Wrapped 2024 is almost here — but you're ahead of the game!
+        </p>
+        <p class="text-sm mt-2 text-gray-500">
+            Built for music lovers, by music lovers.
+        </p>
+    </footer>
+
+    <script>
+        // Function to capture and download the stats section as an image
+        document.getElementById('download-stats').addEventListener('click', function () {
+            const statsContent = document.getElementById('stats-content');
+            html2canvas(statsContent).then((canvas) => {
+                const link = document.createElement('a');
+                link.download = 'Your-Music-Stats.png'; // File name for download
+                link.href = canvas.toDataURL('image/png'); // Generate PNG data
+                link.click(); // Trigger download
+            });
+        });
+    </script>
+</body>
+</html>
