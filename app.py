@@ -60,8 +60,8 @@ def dashboard():
     sp = spotipy.Spotify(auth=token_info['access_token'])
     
     # Fetch top tracks and artists
-    top_tracks = sp.current_user_top_tracks(limit=5, time_range='short_term')
-    top_artists = sp.current_user_top_artists(limit=5, time_range='short_term') #6 months actually lol
+    top_tracks = sp.current_user_top_tracks(limit=5, time_range='medium_term')
+    top_artists = sp.current_user_top_artists(limit=5, time_range='medium_term') #6 months actually lol
     
     # Data processing
     track_names = [track['name'] for track in top_tracks['items']]
