@@ -1,4 +1,4 @@
-# Spotify Wrapped Clone
+# (Pre-) Spotify Wrapped 
 
 ## Prerequisites
 - Python 3.8+
